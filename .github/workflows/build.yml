@@ -1,0 +1,96 @@
+name: 3ds-nightly-build
+
+on:
+  workflow_dispatch:
+    inputs:
+      verboten:
+        required: true
+      verboten2:
+        required: true
+
+env:
+  SKIP_7Z: "true"
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ inputs.verboten }}emu/build-environments:linux-appimage
+      options: -u 1001
+    env:
+      OS: linux
+      TARGET: appimage
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          cmake '-Dverboten=${{ inputs.verboten }}' '-Dverboten2=${{ inputs.verboten2 }}' -P fetch.cmake
+          patch -p 0 -u -i fix.patch
+      - name: Build
+        working-directory: 3ds-nightly
+        run: |
+          set -x
+          git config user.name 3ds-nightly
+          git config user.email '<>'
+          git commit -a -m patches
+          for x in boost libressl library-headers sirit discord-rpc dynarmic; do git rm --cached "externals/$x"; done
+          git commit -m submodules
+          git submodule update --init --recursive
+          git clone https://github.com/KhronosGroup/SPIRV-Headers externals/sirit/externals/SPIRV-Headers
+          r() { chmod +x "$1"; "$1"; }
+          r .ci/linux.sh
+          r .ci/pack.sh
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-appimage
+          path: 3ds-nightly/artifacts/
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    env:
+      OS: windows
+      TARGET: msvc
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          cmake '-Dverboten=${{ inputs.verboten }}' '-Dverboten2=${{ inputs.verboten2 }}' -P fetch.cmake
+          patch -p 0 -u -i fix.patch
+      - name: Set up MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Build
+        working-directory: 3ds-nightly
+        run: |
+          set -x
+          git config user.name 3ds-nightly
+          git config user.email '<>'
+          git commit -a -m patches
+          for x in boost libressl library-headers sirit discord-rpc dynarmic; do git rm --cached "externals/$x"; done
+          git commit -m submodules
+          git submodule update --init --recursive
+          git clone https://github.com/KhronosGroup/SPIRV-Headers externals/sirit/externals/SPIRV-Headers
+          r() { chmod +x "$1"; "$1"; }
+          r .ci/windows.sh
+          r .ci/pack.sh
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msvc
+          path: 3ds-nightly/artifacts/
+  release:
+    runs-on: ubuntu-latest
+    needs: [windows, linux]
+    steps:
+      - uses: actions/download-artifact@v4
+      - name: Get date
+        id: date
+        run: printf $'date=%s\n' "$(date +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: r${{ steps.date.outputs.date }}
+          body: Release ${{ steps.date.outputs.date }}
+          files: |
+            windows-msvc/*
+            linux-appimage/*

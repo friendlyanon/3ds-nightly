@@ -1,0 +1,165 @@
+--- 3ds-nightly/.ci/linux.sh
++++ 3ds-nightly/.ci/linux.sh
+@@ -1,31 +1,15 @@
+ #!/bin/bash -ex
+ 
+-if [ "$TARGET" = "appimage" ]; then
+-    # Compile the AppImage we distribute with Clang.
+-    export EXTRA_CMAKE_FLAGS=(-DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_LINKER=/etc/bin/ld.lld)
+-else
+-    # For the linux-fresh verification target, verify compilation without PCH as well.
+-    export EXTRA_CMAKE_FLAGS=(-D@VERBOTEN@_USE_PRECOMPILED_HEADERS=OFF)
+-fi
+-
+ mkdir build && cd build
+ cmake .. -G Ninja \
+     -DCMAKE_BUILD_TYPE=Release \
+-    -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+-    -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+-    "${EXTRA_CMAKE_FLAGS[@]}" \
++    -DCMAKE_CXX_COMPILER=clang++ \
++    -DCMAKE_C_COMPILER=clang \
++    -DCMAKE_LINKER=/etc/bin/ld.lld \
++    -DENABLE_WEB_SERVICE=0 \
++    -DENABLE_TESTS=0 \
++    -DENABLE_QT_UPDATER=0 \
+     -DENABLE_QT_TRANSLATION=ON \
+-    -D@VERBOTEN@_ENABLE_COMPATIBILITY_REPORTING=ON \
+-    -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON \
+     -DUSE_DISCORD_PRESENCE=ON
+ ninja
+-
+-if [ "$TARGET" = "appimage" ]; then
+-    ninja bundle
+-    # TODO: Our AppImage environment currently uses an older ccache version without the verbose flag.
+-    ccache -s
+-else
+-    ccache -s -v
+-fi
+-
+-ctest -VV -C Release
++ninja bundle
+--- 3ds-nightly/.ci/pack.sh
++++ 3ds-nightly/.ci/pack.sh
+@@ -1,16 +1,8 @@
+ #!/bin/bash -ex
+ 
+ # Determine the full revision name.
+-GITDATE="`git show -s --date=short --format='%ad' | sed 's/-//g'`"
+-GITREV="`git show -s --format='%h'`"
+-REV_NAME="@verboten@-$OS-$TARGET-$GITDATE-$GITREV"
+-
+-# Determine the name of the release being built.
+-if [[ "$GITHUB_REF_NAME" =~ ^canary- ]] || [[ "$GITHUB_REF_NAME" =~ ^nightly- ]]; then
+-    RELEASE_NAME=$(echo $GITHUB_REF_NAME | cut -d- -f1)
+-else
+-    RELEASE_NAME=head
+-fi
++REV_NAME="3ds-$OS-$TARGET-20240303-0ff344023"
++RELEASE_NAME=nightly
+ 
+ # Archive and upload the artifacts.
+ mkdir artifacts
+--- 3ds-nightly/CMakeLists.txt
++++ 3ds-nightly/CMakeLists.txt
+@@ -135,7 +135,7 @@
+ 
+ # Sanity check : Check that all submodules are present
+ # =======================================================================
+-
++if("0")
+ function(check_submodules_present)
+     file(READ "${PROJECT_SOURCE_DIR}/.gitmodules" gitmodules)
+     string(REGEX MATCHALL "path *= *[^ \t\r\n]*" gitmodules ${gitmodules})
+@@ -168,7 +168,7 @@
+ if (NOT EXISTS ${PROJECT_BINARY_DIR}/dist/compatibility_list/compatibility_list.json)
+     file(WRITE ${PROJECT_BINARY_DIR}/dist/compatibility_list/compatibility_list.json "")
+ endif()
+-
++endif()
+ # Detect current compilation architecture and create standard definitions
+ # =======================================================================
+ 
+@@ -305,7 +305,7 @@
+ # Setup a custom clang-format target (if clang-format can be found) that will run
+ # against all the src files. This should be used before making a pull request.
+ # =======================================================================
+-
++if("0")
+ set(CLANG_FORMAT_POSTFIX "-15")
+ find_program(CLANG_FORMAT
+     NAMES clang-format${CLANG_FORMAT_POSTFIX}
+@@ -351,7 +351,7 @@
+     unset(SRCS)
+     unset(CCOMMENT)
+ endif()
+-
++endif()
+ # Include source code
+ # ===================
+ 
+--- 3ds-nightly/.gitmodules
++++ 3ds-nightly/.gitmodules
+@@ -1,6 +1,3 @@
+-[submodule "boost"]
+-    path = externals/boost
+-    url = https://github.com/citra-emu/ext-boost.git
+ [submodule "nihstro"]
+     path = externals/nihstro
+     url = https://github.com/neobrain/nihstro.git
+@@ -25,18 +22,12 @@
+ [submodule "inih"]
+     path = externals/inih/inih
+     url = https://github.com/benhoyt/inih.git
+-[submodule "libressl"]
+-    path = externals/libressl
+-    url = https://github.com/citra-emu/ext-libressl-portable.git
+ [submodule "libusb"]
+     path = externals/libusb/libusb
+     url = https://github.com/libusb/libusb.git
+ [submodule "cubeb"]
+     path = externals/cubeb
+     url = https://github.com/mozilla/cubeb
+-[submodule "discord-rpc"]
+-    path = externals/discord-rpc
+-    url = https://github.com/yuzu-emu/discord-rpc.git
+ [submodule "cpp-jwt"]
+     path = externals/cpp-jwt
+     url = https://github.com/arun11299/cpp-jwt.git
+@@ -76,15 +67,9 @@
+ [submodule "vulkan-headers"]
+     path = externals/vulkan-headers
+     url = https://github.com/KhronosGroup/Vulkan-Headers
+-[submodule "sirit"]
+-    path = externals/sirit
+-    url = https://github.com/yuzu-emu/sirit
+ [submodule "faad2"]
+     path = externals/faad2/faad2
+     url = https://github.com/knik0/faad2
+-[submodule "library-headers"]
+-    path = externals/library-headers
+-    url = https://github.com/citra-emu/ext-library-headers.git
+ [submodule "libadrenotools"]
+     path = externals/libadrenotools
+     url = https://github.com/bylaws/libadrenotools
+--- 3ds-nightly/.ci/windows.sh
++++ 3ds-nightly/.ci/windows.sh
+@@ -3,15 +3,12 @@
+ mkdir build && cd build
+ cmake .. -G Ninja \
+     -DCMAKE_BUILD_TYPE=Release \
+-    -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+-    -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
++    -DENABLE_WEB_SERVICE=0 \
++    -DENABLE_TESTS=0 \
++    -DENABLE_QT_UPDATER=0 \
+     -DENABLE_QT_TRANSLATION=ON \
+     -DCITRA_ENABLE_COMPATIBILITY_REPORTING=ON \
+     -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON \
+     -DUSE_DISCORD_PRESENCE=ON
+ ninja
+ ninja bundle
+-
+-ccache -s -v
+-
+-ctest -VV -C Release || echo "::error ::Test error occurred on Windows build"
