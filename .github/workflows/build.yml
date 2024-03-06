@@ -15,7 +15,7 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     container:
-      image: ${{ inputs.verboten }}emu/build-environments:linux-appimage
+      image: ghcr.io/${{ github.repository }}-linux-appimage:master
       options: -u 1001
     env:
       OS: linux
