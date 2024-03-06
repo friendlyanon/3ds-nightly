@@ -1,5 +1,4 @@
 FROM ubuntu:20.04
-LABEL maintainer="citraemu"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -21,9 +20,8 @@ RUN apt-get install -y \
     build-essential \
     libsdl2-dev \
     libssl-dev \
-    gcc-11 \
-    g++-11 \
-    cpp-11 \
+    clang \
+    lld \
 # Qt 5
     qtbase5-dev \
     qtbase5-private-dev \
