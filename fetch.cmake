@@ -33,6 +33,7 @@ foreach(x boost libressl library-headers sirit discord-rpc dynarmic)
 endforeach()
 
 file(READ "${root}/fix.patch.in" patch)
+string(REPLACE "@verboten2@" "${verboten2}" patch "${patch}")
 string(REPLACE "@verboten@" "${verboten}" patch "${patch}")
 string(REPLACE "@VERBOTEN@" "${VERBOTEN}" patch "${patch}")
 file(WRITE "${root}/fix.patch" "${patch}")

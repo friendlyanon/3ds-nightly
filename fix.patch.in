@@ -103,7 +103,7 @@
 @@ -1,6 +1,3 @@
 -[submodule "boost"]
 -    path = externals/boost
--    url = https://github.com/citra-emu/ext-boost.git
+-    url = https://github.com/@verboten@-emu/ext-boost.git
  [submodule "nihstro"]
      path = externals/nihstro
      url = https://github.com/neobrain/nihstro.git
@@ -113,7 +113,7 @@
      url = https://github.com/benhoyt/inih.git
 -[submodule "libressl"]
 -    path = externals/libressl
--    url = https://github.com/citra-emu/ext-libressl-portable.git
+-    url = https://github.com/@verboten@-emu/ext-libressl-portable.git
  [submodule "libusb"]
      path = externals/libusb/libusb
      url = https://github.com/libusb/libusb.git
@@ -122,7 +122,7 @@
      url = https://github.com/mozilla/cubeb
 -[submodule "discord-rpc"]
 -    path = externals/discord-rpc
--    url = https://github.com/yuzu-emu/discord-rpc.git
+-    url = https://github.com/@verboten2@-emu/discord-rpc.git
  [submodule "cpp-jwt"]
      path = externals/cpp-jwt
      url = https://github.com/arun11299/cpp-jwt.git
@@ -132,13 +132,13 @@
      url = https://github.com/KhronosGroup/Vulkan-Headers
 -[submodule "sirit"]
 -    path = externals/sirit
--    url = https://github.com/yuzu-emu/sirit
+-    url = https://github.com/@verboten2@-emu/sirit
  [submodule "faad2"]
      path = externals/faad2/faad2
      url = https://github.com/knik0/faad2
 -[submodule "library-headers"]
 -    path = externals/library-headers
--    url = https://github.com/citra-emu/ext-library-headers.git
+-    url = https://github.com/@verboten@-emu/ext-library-headers.git
  [submodule "libadrenotools"]
      path = externals/libadrenotools
      url = https://github.com/bylaws/libadrenotools
@@ -154,7 +154,7 @@
 +    -DENABLE_TESTS=0 \
 +    -DENABLE_QT_UPDATER=0 \
      -DENABLE_QT_TRANSLATION=ON \
-     -DCITRA_ENABLE_COMPATIBILITY_REPORTING=ON \
+     -D@VERBOTEN@_ENABLE_COMPATIBILITY_REPORTING=ON \
      -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON \
      -DUSE_DISCORD_PRESENCE=ON
  ninja
@@ -163,8 +163,8 @@
 -ccache -s -v
 -
 -ctest -VV -C Release || echo "::error ::Test error occurred on Windows build"
---- 3ds-nightly/src/citra_qt/configuration/config.cpp
-+++ 3ds-nightly/src/citra_qt/configuration/config.cpp
+--- 3ds-nightly/src/@verboten@_qt/configuration/config.cpp
++++ 3ds-nightly/src/@verboten@_qt/configuration/config.cpp
 @@ -834,20 +834,14 @@
  }
  
@@ -175,17 +175,17 @@
 -    NetSettings::values.enable_telemetry =
 -        ReadSetting(QStringLiteral("enable_telemetry"), false).toBool();
 -    NetSettings::values.web_api_url =
--        ReadSetting(QStringLiteral("web_api_url"), QStringLiteral("https://api.citra-emu.org"))
+-        ReadSetting(QStringLiteral("web_api_url"), QStringLiteral("https://api.@verboten@-emu.org"))
 -            .toString()
 -            .toStdString();
--    NetSettings::values.citra_username =
--        ReadSetting(QStringLiteral("citra_username")).toString().toStdString();
--    NetSettings::values.citra_token =
--        ReadSetting(QStringLiteral("citra_token")).toString().toStdString();
+-    NetSettings::values.@verboten@_username =
+-        ReadSetting(QStringLiteral("@verboten@_username")).toString().toStdString();
+-    NetSettings::values.@verboten@_token =
+-        ReadSetting(QStringLiteral("@verboten@_token")).toString().toStdString();
 +    NetSettings::values.enable_telemetry = false;
 +    NetSettings::values.web_api_url = std::string("");
-+    NetSettings::values.citra_username = std::string("");
-+    NetSettings::values.citra_token = std::string("");
++    NetSettings::values.@verboten@_username = std::string("");
++    NetSettings::values.@verboten@_token = std::string("");
  
 -    qt_config->endGroup();
 +    // qt_config->endGroup();
@@ -201,8 +201,8 @@
          SaveVideoDumpingValues();
      }
  
---- 3ds-nightly/src/citra_qt/main.cpp
-+++ 3ds-nightly/src/citra_qt/main.cpp
+--- 3ds-nightly/src/@verboten@_qt/main.cpp
++++ 3ds-nightly/src/@verboten@_qt/main.cpp
 @@ -914,8 +914,8 @@
      connect(ui->action_Show_Status_Bar, &QAction::triggered, statusBar(), &QStatusBar::setVisible);
  
@@ -214,8 +214,8 @@
      connect(ui->action_Start_Room, &QAction::triggered, multiplayer_state,
              &MultiplayerState::OnCreateRoom);
      connect(ui->action_Leave_Room, &QAction::triggered, multiplayer_state,
---- 3ds-nightly/src/citra_qt/main.ui
-+++ 3ds-nightly/src/citra_qt/main.ui
+--- 3ds-nightly/src/@verboten@_qt/main.ui
++++ 3ds-nightly/src/@verboten@_qt/main.ui
 @@ -158,7 +158,7 @@
      <property name="title">
       <string>Multiplayer</string>
@@ -225,8 +225,8 @@
      <addaction name="action_Start_Room"/>
      <addaction name="action_Connect_To_Room"/>
      <addaction name="separator"/>
---- 3ds-nightly/src/citra_qt/configuration/configure_web.ui
-+++ 3ds-nightly/src/citra_qt/configuration/configure_web.ui
+--- 3ds-nightly/src/@verboten@_qt/configuration/configure_web.ui
++++ 3ds-nightly/src/@verboten@_qt/configuration/configure_web.ui
 @@ -15,163 +15,6 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -418,8 +418,8 @@
    <tabstop>toggle_discordrpc</tabstop>
   </tabstops>
   <resources/>
---- 3ds-nightly/src/citra_qt/configuration/configure_web.cpp
-+++ 3ds-nightly/src/citra_qt/configuration/configure_web.cpp
+--- 3ds-nightly/src/@verboten@_qt/configuration/configure_web.cpp
++++ 3ds-nightly/src/@verboten@_qt/configuration/configure_web.cpp
 @@ -11,38 +11,9 @@
  #include "network/network_settings.h"
  #include "ui_configure_web.h"
@@ -466,30 +466,30 @@
 -    ui->web_credentials_disclaimer->setWordWrap(true);
 -    ui->telemetry_learn_more->setOpenExternalLinks(true);
 -    ui->telemetry_learn_more->setText(tr("<a "
--                                         "href='https://citra-emu.org/entry/"
+-                                         "href='https://@verboten@-emu.org/entry/"
 -                                         "telemetry-and-why-thats-a-good-thing/'><span "
 -                                         "style=\"text-decoration: underline; "
 -                                         "color:#039be5;\">Learn more</span></a>"));
 -
 -    ui->web_signup_link->setOpenExternalLinks(true);
 -    ui->web_signup_link->setText(
--        tr("<a href='https://profile.citra-emu.org/'><span style=\"text-decoration: underline; "
+-        tr("<a href='https://profile.@verboten@-emu.org/'><span style=\"text-decoration: underline; "
 -           "color:#039be5;\">Sign up</span></a>"));
 -    ui->web_token_info_link->setOpenExternalLinks(true);
 -    ui->web_token_info_link->setText(
--        tr("<a href='https://citra-emu.org/wiki/citra-web-service/'><span style=\"text-decoration: "
+-        tr("<a href='https://@verboten@-emu.org/wiki/@verboten@-web-service/'><span style=\"text-decoration: "
 -           "underline; color:#039be5;\">What is my token?</span></a>"));
 -
 -    ui->toggle_telemetry->setChecked(NetSettings::values.enable_telemetry);
 -
--    if (NetSettings::values.citra_username.empty()) {
+-    if (NetSettings::values.@verboten@_username.empty()) {
 -        ui->username->setText(tr("Unspecified"));
 -    } else {
--        ui->username->setText(QString::fromStdString(NetSettings::values.citra_username));
+-        ui->username->setText(QString::fromStdString(NetSettings::values.@verboten@_username));
 -    }
 -
 -    ui->edit_token->setText(QString::fromStdString(
--        GenerateDisplayToken(NetSettings::values.citra_username, NetSettings::values.citra_token)));
+-        GenerateDisplayToken(NetSettings::values.@verboten@_username, NetSettings::values.@verboten@_token)));
 -
 -    // Connect after setting the values, to avoid calling OnLoginChanged now
 -    connect(ui->edit_token, &QLineEdit::textChanged, this, &ConfigureWeb::OnLoginChanged);
@@ -504,9 +504,9 @@
 -    NetSettings::values.enable_telemetry = ui->toggle_telemetry->isChecked();
 -    UISettings::values.enable_discord_presence = ui->toggle_discordrpc->isChecked();
 -    if (user_verified) {
--        NetSettings::values.citra_username =
+-        NetSettings::values.@verboten@_username =
 -            UsernameFromDisplayToken(ui->edit_token->text().toStdString());
--        NetSettings::values.citra_token =
+-        NetSettings::values.@verboten@_token =
 -            TokenFromDisplayToken(ui->edit_token->text().toStdString());
 -    } else {
 -        QMessageBox::warning(
@@ -573,8 +573,8 @@
 -    ui->label_disable_info->setVisible(!enabled);
 -    ui->groupBoxWebConfig->setEnabled(enabled);
 -}
---- 3ds-nightly/src/citra_qt/configuration/configure_web.h
-+++ 3ds-nightly/src/citra_qt/configuration/configure_web.h
+--- 3ds-nightly/src/@verboten@_qt/configuration/configure_web.h
++++ 3ds-nightly/src/@verboten@_qt/configuration/configure_web.h
 @@ -5,7 +5,6 @@
  #pragma once
  
@@ -603,8 +603,8 @@
 -
      std::unique_ptr<Ui::ConfigureWeb> ui;
  };
---- 3ds-nightly/src/citra_qt/configuration/configure_dialog.cpp
-+++ 3ds-nightly/src/citra_qt/configuration/configure_dialog.cpp
+--- 3ds-nightly/src/@verboten@_qt/configuration/configure_dialog.cpp
++++ 3ds-nightly/src/@verboten@_qt/configuration/configure_dialog.cpp
 @@ -57,7 +57,6 @@
      ui->tabWidget->addTab(ui_tab.get(), tr("UI"));
  
