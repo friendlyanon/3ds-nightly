@@ -225,3 +225,399 @@
      <addaction name="action_Start_Room"/>
      <addaction name="action_Connect_To_Room"/>
      <addaction name="separator"/>
+--- 3ds-nightly/src/citra_qt/configuration/configure_web.ui
++++ 3ds-nightly/src/citra_qt/configuration/configure_web.ui
+@@ -15,163 +15,6 @@
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+-    <layout class="QVBoxLayout" name="verticalLayout_3">
+-     <item>
+-      <widget class="QGroupBox" name="groupBoxWebConfig">
+-       <property name="title">
+-        <string>Citra Web Service</string>
+-       </property>
+-       <layout class="QVBoxLayout" name="verticalLayoutCitraWebService">
+-        <item>
+-         <widget class="QLabel" name="web_credentials_disclaimer">
+-          <property name="text">
+-           <string>By providing your username and token, you agree to allow Citra to collect additional usage data, which may include user identifying information.</string>
+-          </property>
+-         </widget>
+-        </item>
+-        <item>
+-         <layout class="QGridLayout" name="gridLayoutCitraUsername">
+-          <item row="2" column="3">
+-           <widget class="QPushButton" name="button_verify_login">
+-            <property name="sizePolicy">
+-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+-              <horstretch>0</horstretch>
+-              <verstretch>0</verstretch>
+-             </sizepolicy>
+-            </property>
+-            <property name="layoutDirection">
+-             <enum>Qt::RightToLeft</enum>
+-            </property>
+-            <property name="text">
+-             <string>Verify</string>
+-            </property>
+-           </widget>
+-          </item>
+-          <item row="2" column="0">
+-           <widget class="QLabel" name="web_signup_link">
+-            <property name="text">
+-             <string>Sign up</string>
+-            </property>
+-           </widget>
+-          </item>
+-          <item row="0" column="1" colspan="3">
+-           <widget class="QLabel" name="username"/>
+-          </item>
+-          <item row="1" column="0">
+-           <widget class="QLabel" name="label_token">
+-            <property name="text">
+-             <string>Token: </string>
+-            </property>
+-           </widget>
+-          </item>
+-          <item row="1" column="4">
+-           <widget class="QLabel" name="label_token_verified"/>
+-          </item>
+-          <item row="0" column="0">
+-           <widget class="QLabel" name="label_username">
+-            <property name="text">
+-             <string>Username: </string>
+-            </property>
+-           </widget>
+-          </item>
+-          <item row="1" column="1" colspan="3">
+-           <widget class="QLineEdit" name="edit_token">
+-            <property name="maxLength">
+-             <number>80</number>
+-            </property>
+-            <property name="echoMode">
+-             <enum>QLineEdit::Password</enum>
+-            </property>
+-           </widget>
+-          </item>
+-          <item row="2" column="1">
+-           <widget class="QLabel" name="web_token_info_link">
+-            <property name="text">
+-             <string>What is my token?</string>
+-            </property>
+-           </widget>
+-          </item>
+-          <item row="2" column="2">
+-           <spacer name="horizontalSpacer">
+-            <property name="orientation">
+-             <enum>Qt::Horizontal</enum>
+-            </property>
+-            <property name="sizeHint" stdset="0">
+-             <size>
+-              <width>40</width>
+-              <height>20</height>
+-             </size>
+-            </property>
+-           </spacer>
+-          </item>
+-         </layout>
+-        </item>
+-       </layout>
+-      </widget>
+-     </item>
+-     <item>
+-      <widget class="QLabel" name="label_disable_info">
+-       <property name="text">
+-        <string>Web Service configuration can only be changed when a public room isn't being hosted.</string>
+-       </property>
+-       <property name="wordWrap">
+-        <bool>true</bool>
+-       </property>
+-      </widget>
+-     </item>
+-     <item>
+-      <widget class="QGroupBox" name="groupBox">
+-       <property name="title">
+-        <string>Telemetry</string>
+-       </property>
+-       <layout class="QVBoxLayout" name="verticalLayout_2">
+-        <item>
+-         <widget class="QCheckBox" name="toggle_telemetry">
+-          <property name="text">
+-           <string>Share anonymous usage data with the Citra team</string>
+-          </property>
+-         </widget>
+-        </item>
+-        <item>
+-         <widget class="QLabel" name="telemetry_learn_more">
+-          <property name="text">
+-           <string>Learn more</string>
+-          </property>
+-         </widget>
+-        </item>
+-        <item>
+-         <layout class="QGridLayout" name="gridLayoutTelemetryId">
+-          <item row="0" column="0">
+-           <widget class="QLabel" name="label_telemetry_id">
+-            <property name="text">
+-             <string>Telemetry ID:</string>
+-            </property>
+-           </widget>
+-          </item>
+-          <item row="0" column="1">
+-           <widget class="QPushButton" name="button_regenerate_telemetry_id">
+-            <property name="sizePolicy">
+-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+-              <horstretch>0</horstretch>
+-              <verstretch>0</verstretch>
+-             </sizepolicy>
+-            </property>
+-            <property name="layoutDirection">
+-             <enum>Qt::RightToLeft</enum>
+-            </property>
+-            <property name="text">
+-             <string>Regenerate</string>
+-            </property>
+-           </widget>
+-          </item>
+-         </layout>
+-        </item>
+-       </layout>
+-      </widget>
+-     </item>
+-    </layout>
+-   </item>
+-   <item>
+     <widget class="QGroupBox" name="discord_group">
+      <property name="title">
+       <string>Discord Presence</string>
+@@ -187,26 +30,9 @@
+      </layout>
+     </widget>
+    </item>
+-   <item>
+-    <spacer name="verticalSpacer">
+-     <property name="orientation">
+-      <enum>Qt::Vertical</enum>
+-     </property>
+-     <property name="sizeHint" stdset="0">
+-      <size>
+-       <width>20</width>
+-       <height>40</height>
+-      </size>
+-     </property>
+-    </spacer>
+-   </item>
+   </layout>
+  </widget>
+  <tabstops>
+-  <tabstop>edit_token</tabstop>
+-  <tabstop>button_verify_login</tabstop>
+-  <tabstop>toggle_telemetry</tabstop>
+-  <tabstop>button_regenerate_telemetry_id</tabstop>
+   <tabstop>toggle_discordrpc</tabstop>
+  </tabstops>
+  <resources/>
+--- 3ds-nightly/src/citra_qt/configuration/configure_web.cpp
++++ 3ds-nightly/src/citra_qt/configuration/configure_web.cpp
+@@ -11,38 +11,9 @@
+ #include "network/network_settings.h"
+ #include "ui_configure_web.h"
+ 
+-static constexpr char token_delimiter{':'};
+-
+-static std::string GenerateDisplayToken(const std::string& username, const std::string& token) {
+-    if (username.empty() || token.empty()) {
+-        return {};
+-    }
+-
+-    const std::string unencoded_display_token{username + token_delimiter + token};
+-    QByteArray b{unencoded_display_token.c_str()};
+-    QByteArray b64 = b.toBase64();
+-    return b64.toStdString();
+-}
+-
+-static std::string UsernameFromDisplayToken(const std::string& display_token) {
+-    const std::string unencoded_display_token{
+-        QByteArray::fromBase64(display_token.c_str()).toStdString()};
+-    return unencoded_display_token.substr(0, unencoded_display_token.find(token_delimiter));
+-}
+-
+-static std::string TokenFromDisplayToken(const std::string& display_token) {
+-    const std::string unencoded_display_token{
+-        QByteArray::fromBase64(display_token.c_str()).toStdString()};
+-    return unencoded_display_token.substr(unencoded_display_token.find(token_delimiter) + 1);
+-}
+-
+ ConfigureWeb::ConfigureWeb(QWidget* parent)
+     : QWidget(parent), ui(std::make_unique<Ui::ConfigureWeb>()) {
+     ui->setupUi(this);
+-    connect(ui->button_regenerate_telemetry_id, &QPushButton::clicked, this,
+-            &ConfigureWeb::RefreshTelemetryID);
+-    connect(ui->button_verify_login, &QPushButton::clicked, this, &ConfigureWeb::VerifyLogin);
+-    connect(&verify_watcher, &QFutureWatcher<bool>::finished, this, &ConfigureWeb::OnLoginVerified);
+ 
+ #ifndef USE_DISCORD_PRESENCE
+     ui->discord_group->setVisible(false);
+@@ -53,113 +24,9 @@
+ ConfigureWeb::~ConfigureWeb() = default;
+ 
+ void ConfigureWeb::SetConfiguration() {
+-    ui->web_credentials_disclaimer->setWordWrap(true);
+-    ui->telemetry_learn_more->setOpenExternalLinks(true);
+-    ui->telemetry_learn_more->setText(tr("<a "
+-                                         "href='https://citra-emu.org/entry/"
+-                                         "telemetry-and-why-thats-a-good-thing/'><span "
+-                                         "style=\"text-decoration: underline; "
+-                                         "color:#039be5;\">Learn more</span></a>"));
+-
+-    ui->web_signup_link->setOpenExternalLinks(true);
+-    ui->web_signup_link->setText(
+-        tr("<a href='https://profile.citra-emu.org/'><span style=\"text-decoration: underline; "
+-           "color:#039be5;\">Sign up</span></a>"));
+-    ui->web_token_info_link->setOpenExternalLinks(true);
+-    ui->web_token_info_link->setText(
+-        tr("<a href='https://citra-emu.org/wiki/citra-web-service/'><span style=\"text-decoration: "
+-           "underline; color:#039be5;\">What is my token?</span></a>"));
+-
+-    ui->toggle_telemetry->setChecked(NetSettings::values.enable_telemetry);
+-
+-    if (NetSettings::values.citra_username.empty()) {
+-        ui->username->setText(tr("Unspecified"));
+-    } else {
+-        ui->username->setText(QString::fromStdString(NetSettings::values.citra_username));
+-    }
+-
+-    ui->edit_token->setText(QString::fromStdString(
+-        GenerateDisplayToken(NetSettings::values.citra_username, NetSettings::values.citra_token)));
+-
+-    // Connect after setting the values, to avoid calling OnLoginChanged now
+-    connect(ui->edit_token, &QLineEdit::textChanged, this, &ConfigureWeb::OnLoginChanged);
+-    ui->label_telemetry_id->setText(
+-        tr("Telemetry ID: 0x%1").arg(QString::number(Core::GetTelemetryId(), 16).toUpper()));
+-    user_verified = true;
+-
+     ui->toggle_discordrpc->setChecked(UISettings::values.enable_discord_presence.GetValue());
+ }
+ 
+-void ConfigureWeb::ApplyConfiguration() {
+-    NetSettings::values.enable_telemetry = ui->toggle_telemetry->isChecked();
+-    UISettings::values.enable_discord_presence = ui->toggle_discordrpc->isChecked();
+-    if (user_verified) {
+-        NetSettings::values.citra_username =
+-            UsernameFromDisplayToken(ui->edit_token->text().toStdString());
+-        NetSettings::values.citra_token =
+-            TokenFromDisplayToken(ui->edit_token->text().toStdString());
+-    } else {
+-        QMessageBox::warning(
+-            this, tr("Token not verified"),
+-            tr("Token was not verified. The change to your token has not been saved."));
+-    }
+-}
+-
+-void ConfigureWeb::RefreshTelemetryID() {
+-    const u64 new_telemetry_id{Core::RegenerateTelemetryId()};
+-    ui->label_telemetry_id->setText(
+-        tr("Telemetry ID: 0x%1").arg(QString::number(new_telemetry_id, 16).toUpper()));
+-}
+-
+-void ConfigureWeb::OnLoginChanged() {
+-    if (ui->edit_token->text().isEmpty()) {
+-        user_verified = true;
+-
+-        const QPixmap pixmap = QIcon::fromTheme(QStringLiteral("checked")).pixmap(16);
+-        ui->label_token_verified->setPixmap(pixmap);
+-    } else {
+-        user_verified = false;
+-
+-        const QPixmap pixmap = QIcon::fromTheme(QStringLiteral("failed")).pixmap(16);
+-        ui->label_token_verified->setPixmap(pixmap);
+-    }
+-}
+-
+-void ConfigureWeb::VerifyLogin() {
+-    ui->button_verify_login->setDisabled(true);
+-    ui->button_verify_login->setText(tr("Verifying..."));
+-    verify_watcher.setFuture(QtConcurrent::run(
+-        [username = UsernameFromDisplayToken(ui->edit_token->text().toStdString()),
+-         token = TokenFromDisplayToken(ui->edit_token->text().toStdString())] {
+-            return Core::VerifyLogin(username, token);
+-        }));
+-}
+-
+-void ConfigureWeb::OnLoginVerified() {
+-    ui->button_verify_login->setEnabled(true);
+-    ui->button_verify_login->setText(tr("Verify"));
+-    if (verify_watcher.result()) {
+-        user_verified = true;
+-
+-        const QPixmap pixmap = QIcon::fromTheme(QStringLiteral("checked")).pixmap(16);
+-        ui->label_token_verified->setPixmap(pixmap);
+-        ui->username->setText(
+-            QString::fromStdString(UsernameFromDisplayToken(ui->edit_token->text().toStdString())));
+-    } else {
+-        const QPixmap pixmap = QIcon::fromTheme(QStringLiteral("failed")).pixmap(16);
+-        ui->label_token_verified->setPixmap(pixmap);
+-        ui->username->setText(tr("Unspecified"));
+-        QMessageBox::critical(this, tr("Verification failed"),
+-                              tr("Verification failed. Check that you have entered your token "
+-                                 "correctly, and that your internet connection is working."));
+-    }
+-}
+-
+ void ConfigureWeb::RetranslateUI() {
+     ui->retranslateUi(this);
+ }
+-
+-void ConfigureWeb::SetWebServiceConfigEnabled(bool enabled) {
+-    ui->label_disable_info->setVisible(!enabled);
+-    ui->groupBoxWebConfig->setEnabled(enabled);
+-}
+--- 3ds-nightly/src/citra_qt/configuration/configure_web.h
++++ 3ds-nightly/src/citra_qt/configuration/configure_web.h
+@@ -5,7 +5,6 @@
+ #pragma once
+ 
+ #include <memory>
+-#include <QFutureWatcher>
+ #include <QWidget>
+ 
+ namespace Ui {
+@@ -19,19 +18,9 @@
+     explicit ConfigureWeb(QWidget* parent = nullptr);
+     ~ConfigureWeb() override;
+ 
+-    void ApplyConfiguration();
+     void RetranslateUI();
+     void SetConfiguration();
+-    void SetWebServiceConfigEnabled(bool enabled);
+ 
+ private:
+-    void RefreshTelemetryID();
+-    void OnLoginChanged();
+-    void VerifyLogin();
+-    void OnLoginVerified();
+-
+-    bool user_verified = true;
+-    QFutureWatcher<bool> verify_watcher;
+-
+     std::unique_ptr<Ui::ConfigureWeb> ui;
+ };
+--- 3ds-nightly/src/citra_qt/configuration/configure_dialog.cpp
++++ 3ds-nightly/src/citra_qt/configuration/configure_dialog.cpp
+@@ -57,7 +57,6 @@
+     ui->tabWidget->addTab(ui_tab.get(), tr("UI"));
+ 
+     hotkeys_tab->Populate(registry);
+-    web_tab->SetWebServiceConfigEnabled(enable_web_config);
+ 
+     PopulateSelectionList();
+ 
+@@ -106,7 +105,6 @@
+     audio_tab->ApplyConfiguration();
+     camera_tab->ApplyConfiguration();
+     debug_tab->ApplyConfiguration();
+-    web_tab->ApplyConfiguration();
+     ui_tab->ApplyConfiguration();
+     storage_tab->ApplyConfiguration();
+     system.ApplySettings();
