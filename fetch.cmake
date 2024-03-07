@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.18)
 
 string(TOUPPER "${verboten}" VERBOTEN)
+string(SUBSTRING "${VERBOTEN}" 0 1 Verboten)
+string(SUBSTRING "${verboten}" 1 -1 Verboten_end)
+set(Verboten "${Verboten}${Verboten_end}")
+
 set(file "${verboten}-nightly-source.zip")
 set(url "https://archive.org/download/${verboten}-nightly/${file}")
 set(root "${CMAKE_CURRENT_LIST_DIR}")
@@ -35,5 +39,6 @@ endforeach()
 file(READ "${root}/fix.patch.in" patch)
 string(REPLACE "@verboten2@" "${verboten2}" patch "${patch}")
 string(REPLACE "@verboten@" "${verboten}" patch "${patch}")
+string(REPLACE "@Verboten@" "${Verboten}" patch "${patch}")
 string(REPLACE "@VERBOTEN@" "${VERBOTEN}" patch "${patch}")
 file(WRITE "${root}/fix.patch" "${patch}")
