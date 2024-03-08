@@ -605,3 +605,58 @@
      ui_tab->ApplyConfiguration();
      storage_tab->ApplyConfiguration();
      system.ApplySettings();
+--- 3ds-nightly/src/@verboten@_qt/multiplayer/host_room.ui
++++ 3ds-nightly/src/@verboten@_qt/multiplayer/host_room.ui
+@@ -178,20 +178,6 @@
+       </spacer>
+      </item>
+      <item>
+-      <widget class="QComboBox" name="host_type">
+-       <item>
+-        <property name="text">
+-         <string>Public</string>
+-        </property>
+-       </item>
+-       <item>
+-        <property name="text">
+-         <string>Unlisted</string>
+-        </property>
+-       </item>
+-      </widget>
+-     </item>
+-     <item>
+       <widget class="QPushButton" name="host">
+        <property name="text">
+         <string>Host Room</string>
+--- 3ds-nightly/src/@verboten@_qt/multiplayer/host_room.cpp
++++ 3ds-nightly/src/@verboten@_qt/multiplayer/host_room.cpp
+@@ -59,11 +59,7 @@
+     ui->room_name->setText(UISettings::values.room_name);
+     ui->port->setText(UISettings::values.room_port);
+     ui->max_player->setValue(UISettings::values.max_player);
+-    int index = UISettings::values.host_type;
+-    if (index < ui->host_type->count()) {
+-        ui->host_type->setCurrentIndex(index);
+-    }
+-    index = ui->game_list->findData(UISettings::values.game_id, GameListItemPath::ProgramIdRole);
++    int index = ui->game_list->findData(UISettings::values.game_id, GameListItemPath::ProgramIdRole);
+     if (index != -1) {
+         ui->game_list->setCurrentIndex(index);
+     }
+@@ -135,7 +131,7 @@
+         auto game_id = ui->game_list->currentData(GameListItemPath::ProgramIdRole).toLongLong();
+         auto port = ui->port->isModified() ? ui->port->text().toInt() : Network::DefaultRoomPort;
+         auto password = ui->password->text().toStdString();
+-        const bool is_public = ui->host_type->currentIndex() == 0;
++        constexpr bool is_public = false;
+         Network::Room::BanList ban_list{};
+         if (ui->load_ban_list->isChecked()) {
+             ban_list = UISettings::values.ban_list;
+@@ -205,7 +201,6 @@
+             ui->game_list->currentData(GameListItemPath::ProgramIdRole).toLongLong();
+         UISettings::values.max_player = ui->max_player->value();
+ 
+-        UISettings::values.host_type = ui->host_type->currentIndex();
+         UISettings::values.room_port = (ui->port->isModified() && !ui->port->text().isEmpty())
+                                            ? ui->port->text()
+                                            : QString::number(Network::DefaultRoomPort);
