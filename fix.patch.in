@@ -165,13 +165,12 @@
 -ctest -VV -C Release || echo "::error ::Test error occurred on Windows build"
 --- 3ds-nightly/src/@verboten@_qt/configuration/config.cpp
 +++ 3ds-nightly/src/@verboten@_qt/configuration/config.cpp
-@@ -834,20 +834,14 @@
+@@ -834,20 +834,10 @@
  }
  
  void Config::ReadWebServiceValues() {
 -    qt_config->beginGroup(QStringLiteral("WebService"));
-+    // qt_config->beginGroup(QStringLiteral("WebService"));
- 
+-
 -    NetSettings::values.enable_telemetry =
 -        ReadSetting(QStringLiteral("enable_telemetry"), false).toBool();
 -    NetSettings::values.web_api_url =
@@ -186,42 +185,37 @@
 +    NetSettings::values.web_api_url = std::string("");
 +    NetSettings::values.@verboten@_username = std::string("");
 +    NetSettings::values.@verboten@_token = std::string("");
- 
+-
 -    qt_config->endGroup();
-+    // qt_config->endGroup();
  }
  
  void Config::SaveValues() {
-@@ -857,7 +851,7 @@
+@@ -857,7 +851,6 @@
          SaveDataStorageValues();
          SaveMiscellaneousValues();
          SaveDebuggingValues();
 -        SaveWebServiceValues();
-+        // SaveWebServiceValues();
          SaveVideoDumpingValues();
      }
  
 --- 3ds-nightly/src/@verboten@_qt/main.cpp
 +++ 3ds-nightly/src/@verboten@_qt/main.cpp
-@@ -914,8 +914,8 @@
+@@ -914,8 +914,6 @@
      connect(ui->action_Show_Status_Bar, &QAction::triggered, statusBar(), &QStatusBar::setVisible);
  
      // Multiplayer
 -    connect(ui->action_View_Lobby, &QAction::triggered, multiplayer_state,
 -            &MultiplayerState::OnViewLobby);
-+    /* connect(ui->action_View_Lobby, &QAction::triggered, multiplayer_state,
-+            &MultiplayerState::OnViewLobby); */
      connect(ui->action_Start_Room, &QAction::triggered, multiplayer_state,
              &MultiplayerState::OnCreateRoom);
      connect(ui->action_Leave_Room, &QAction::triggered, multiplayer_state,
 --- 3ds-nightly/src/@verboten@_qt/main.ui
 +++ 3ds-nightly/src/@verboten@_qt/main.ui
-@@ -158,7 +158,7 @@
+@@ -158,7 +158,6 @@
      <property name="title">
       <string>Multiplayer</string>
      </property>
 -    <addaction name="action_View_Lobby"/>
-+    <!-- <addaction name="action_View_Lobby"/> -->
      <addaction name="action_Start_Room"/>
      <addaction name="action_Connect_To_Room"/>
      <addaction name="separator"/>
@@ -660,3 +654,15 @@
          UISettings::values.room_port = (ui->port->isModified() && !ui->port->text().isEmpty())
                                             ? ui->port->text()
                                             : QString::number(Network::DefaultRoomPort);
+--- 3ds-nightly/src/@verboten@_qt/multiplayer/state.cpp
++++ 3ds-nightly/src/@verboten@_qt/multiplayer/state.cpp
+@@ -268,9 +268,6 @@
+             return;
+         }
+     }
+-    // If the user is not a member of a room, show the lobby instead.
+-    // This is currently only used on the clickable label in the status bar
+-    OnViewLobby();
+ }
+ 
+ void MultiplayerState::OnDirectConnectToRoom() {
